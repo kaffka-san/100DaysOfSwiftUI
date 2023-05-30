@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct ContentView: View {
     @State private var amount = 0.0
     @State private var numberOfPeople = 2
