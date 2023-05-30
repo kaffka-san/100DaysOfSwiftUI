@@ -18,6 +18,20 @@ struct FlagImage: View{
             .shadow(radius: 5)
     }
 }
+struct Title: ViewModifier{
+    //var textTitle : String
+    func body(content: Content) -> some View {
+        content
+        .font(.largeTitle.bold())
+        .foregroundColor(.white)
+    }
+}
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+    
+}
 struct ContentView: View {
     @State private var isAlertActive = false
     @State private var titleAlert = ""
@@ -38,8 +52,7 @@ struct ContentView: View {
                 Spacer()
                 VStack{
                     Text("Guess The Flag")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(.white)
+                        .titleStyle()
                 }
                 VStack{
                     VStack{
