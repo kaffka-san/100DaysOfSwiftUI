@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+struct FlagImage: View{
+    var imageName : String
+    var body: some View {
+        Image(imageName)
+            .renderingMode(.original)
+            .resizable()
+            .frame(width: 300, height: 130)
+            .clipShape(Capsule())
+            .shadow(radius: 5)
+    }
+}
 struct ContentView: View {
     @State private var isAlertActive = false
     @State private var titleAlert = ""
@@ -43,12 +54,8 @@ struct ContentView: View {
                             Button{
                                 checkFlag(number: number)
                             } label: {
-                                Image(countries[number])
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .frame(width: 300, height: 130)
-                                    .clipShape(Capsule())
-                                    .shadow(radius: 5)
+                                FlagImage(imageName: countries[number])
+                               
                             }
                         }
                     }
