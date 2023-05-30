@@ -10,63 +10,93 @@ import SwiftUI
 struct ContentView: View {
     @State private var isAlertActive = false
     @State private var titleAlert = ""
-    @State private var countries = ["Estonia", "France", "Germany", "Ireland" , "Italy", "Nigereia",
+    @State private var messageAlert = ""
+    @State private var score = 0
+    @State private var roundNumber = 0
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland" , "Italy", "Nigeria",
                                     "Poland", "Russia", "Spain", "UK", "US"]
     @State private var rightAnswear = Int.random(in: 0...2)
     var body: some View {
         ZStack{
-            LinearGradient(gradient: Gradient(colors: [.cyan, .blue]), startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            
-            VStack (spacing: 10){
+            RadialGradient(stops: [
+                .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
+                .init(color: Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3),
+            ], center: .top, startRadius: 200, endRadius: 400)
+            .ignoresSafeArea()
+            VStack{
                 Spacer()
                 VStack{
-                    Text("Tap the flag of")
-                        .font(.headline.weight(.heavy))
-                    Text(countries[rightAnswear])
-                        .font(.largeTitle.weight(.semibold))
-                    
-                }.foregroundColor(.white)
-        
-                Spacer()
-                VStack(spacing: 50){
-                    ForEach(0..<3){ number in
-                        Button{
-                            checkFlag(number: number)
-                        } label: {
-                            Image(countries[number])
-                                .renderingMode(.original)
-                                .resizable()
-                                .frame(width: 300, height: 150)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                    Text("Guess The Flag")
+                        .font(.largeTitle.bold())
+                        .foregroundColor(.white)
+                }
+                VStack{
+                    VStack{
+                        Text("Tap the flag of")
+                            .font(.headline.weight(.heavy))
+                        Text(countries[rightAnswear])
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    .foregroundStyle(.secondary)
+                    VStack(spacing: 10){
+                        ForEach(0..<3){ number in
+                            Button{
+                                checkFlag(number: number)
+                            } label: {
+                                Image(countries[number])
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .frame(width: 300, height: 130)
+                                    .clipShape(Capsule())
+                                    .shadow(radius: 5)
+                            }
                         }
                     }
-                    
-                }.padding()
-           
-                
-              Spacer()
-            }
-           
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.thinMaterial)
+               
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                Spacer()
+                VStack{
+                    Text("Your Score is: \(score)")
+                        .font(.largeTitle.bold())
+                        .foregroundColor(.white)
+                }
+                Spacer()
+                Spacer()
+            }.padding()
         }
         .alert(titleAlert, isPresented: $isAlertActive) {
-            Button("Continue", action: askQuestion)
+            Button("Try Again", action: askQuestion)
         } message: {
-            Text("Tou score is ???")
+            Text(messageAlert)
         }
     }
     func askQuestion(){
         countries.shuffle()
         rightAnswear = Int.random(in: 0...2)
     }
+    func checkIsLastQuestion(){
+        if roundNumber == 8 {
+            titleAlert = "You finished the Game"
+            messageAlert = "You score is: \(score)"
+            isAlertActive = true
+            resetGame()
+        }
+    }
+    func resetGame(){
+        roundNumber = 0
+        score = 0
+    }
     func checkFlag(number: Int) {
         if number == rightAnswear{
-            titleAlert = "Correct!"
-        } else {
-            titleAlert = "Wrong!"
+            score += 1
         }
-        isAlertActive = true
+        roundNumber += 1
+        checkIsLastQuestion()
+        askQuestion()
     }
 }
 
