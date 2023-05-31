@@ -13,16 +13,7 @@ struct ContentView: View {
     @State private var timeToWakeUp = defaultWakeUp
     @State private var amountCoffee = 4
     @State private var alertTitle = ""
-    @State private var alertMessage = ""
-    @State private var alertisActive = false
-    static var defaultWakeUp : Date{
-        var components = DateComponents()
-        components.minute = 0
-        components.hour = 7
-        return Calendar.current.date(from: components) ?? Date.now
-    }
-   
-    func calculateAmountOfSleep(){
+    var alertMessage : String {
         do{
             let config = MLModelConfiguration()
             let model = try SleepCalculator(configuration: config)
@@ -32,54 +23,68 @@ struct ContentView: View {
             let prediction = try model.prediction(wake: Double(min + hours), estimatedSleep: amountSleep, coffee: Double(amountCoffee))
             alertTitle = "Yout ideal time to got to bed is..."
             var timeToGoToBed = timeToWakeUp - prediction.actualSleep
-            alertMessage = "\(timeToGoToBed.formatted(date: .omitted, time: .shortened))"
+            return "\(timeToGoToBed.formatted(date: .omitted, time: .shortened))"
         } catch{
             alertTitle = "Error"
-            alertMessage = "Sorry, there was a problem with calculating your amount of sleep"
+            return "Sorry, there was a problem with calculating your amount of sleep"
         }
-        
-        alertisActive = true
     }
+    @State private var alertisActive = false
+    static var defaultWakeUp : Date{
+        var components = DateComponents()
+        components.minute = 0
+        components.hour = 7
+        return Calendar.current.date(from: components) ?? Date.now
+    }
+
     var body: some View {
         NavigationView{
-            Form{
-                //Stepper("\(amountSleep.formatted())", value: $amountSleep, in: 4...12, step: 0.25)
-                //DatePicker("Please select a date", selection: $timeToWakeUp, in: Date.now...)
-                VStack (alignment: .leading, spacing: 10){
-                    Text("When do you want to wake up?")
-                        .font(.headline)
-                    DatePicker("When do you want to wake up", selection: $timeToWakeUp, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                }
-                VStack (alignment: .leading, spacing: 10){
-                    Text("Desired amount of sleep")
-                        .font(.headline)
-                    Stepper("\(amountSleep.formatted())", value: $amountSleep, in: 4...12, step: 0.25)
-                }
-                VStack (alignment: .leading, spacing: 10){
-                    Text("Daily coffee intake")
-                        .font(.headline)
-                    Stepper( (amountCoffee > 1 ? "\(amountCoffee) cups" : "1 cup"), value: $amountCoffee, in: 1...20)
-                }
-
-            }
-            .alert(alertTitle, isPresented: $alertisActive) {
-                Button("OK"){}
+            VStack{
                 
-            } message: {
-                Text(alertMessage)
-            }
-            .navigationTitle("BetterRest")
-            .toolbar {
-                Button("Calculate", action: calculateAmountOfSleep )
-            }
+                Form{
+                    VStack (alignment: .leading, spacing: 10){
+                        Text("When do you want to wake up?")
+                            .font(.headline)
+                        DatePicker("When do you want to wake up", selection: $timeToWakeUp, displayedComponents: .hourAndMinute)
+                            .labelsHidden()
+                    }
+                    VStack (alignment: .leading, spacing: 10){
+                        Text("Desired amount of sleep")
+                            .font(.headline)
+                        Stepper("\(amountSleep.formatted())", value: $amountSleep, in: 4...12, step: 0.25)
+                    }
+                    VStack (alignment: .leading, spacing: 10){
+                        Text("Daily coffee intake")
+                            .font(.headline)
+                        //  Stepper( (amountCoffee > 1 ? "\(amountCoffee) cups" : "1 cup"), value: $amountCoffee, in: 1...20)
+                        Picker("amount of coffee", selection: $amountCoffee) {
+                            ForEach(1...20, id: \.self ){
+                                Text($0 == 1 ? "\($0) cup" : "\($0) cups")
+                            }
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 10){
+                        Text("Your ideal time to go to bed is...")
+                            .font(.headline)
+
+                        Text(alertMessage).font(.largeTitle)
+                        
+                    }
+                }
+                .alert(alertTitle, isPresented: $alertisActive) {
+                    Button("OK"){}
+                    
+                } message: {
+                    Text(alertMessage)
+                    
+                }
+                
+            }.navigationTitle("BetterRest")
+            
         }
-        
-        
-       
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
