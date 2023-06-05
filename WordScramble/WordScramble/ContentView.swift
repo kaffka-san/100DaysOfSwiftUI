@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var errorTitle = ""
     @State private var errorMessage = ""
     @State private var isAlertActive = false
+    @State private var score = 0
     var body: some View {
         NavigationView{
             List{
@@ -27,7 +28,9 @@ struct ContentView: View {
                 } message: {
                     Text(errorMessage)
                 }
-                
+                Section("Your score is:"){
+                    Text(String(score))
+                }
                 Section{
                     ForEach(usedWords, id: \.self){ word in
                         HStack{
@@ -37,10 +40,15 @@ struct ContentView: View {
                     }
                 }
                 
+                
             }.navigationTitle(rootWord)
+                .toolbar {
+                    Button("Restart", action: startGame)
+                }
         }
         
     }
+    
     func isOriginal(word: String) -> Bool {
         return !usedWords.contains(word)
     }
@@ -48,6 +56,12 @@ struct ContentView: View {
         errorTitle = title
         errorMessage = messgae
         isAlertActive = true
+    }
+    func isNotShortWord(word: String) -> Bool {
+        return word.count > 2
+    }
+    func isNotSameWord(word: String) -> Bool {
+        return !(word == rootWord)
     }
     func isPossible(word: String) -> Bool{
         var tempRootWord = rootWord
@@ -69,32 +83,46 @@ struct ContentView: View {
             wordError(title: "Word not possible", messgae: "You can't spell it from \(rootWord)")
             return
         }
+        guard isNotSameWord(word: formattedWord) else {
+            wordError(title: "Same word", messgae: "You can't use \(rootWord) ")
+            return
+        }
+        guard isNotShortWord(word: formattedWord) else {
+            wordError(title: "Word is too short", messgae: "Word should have at least 3 letters")
+            return
+        }
         guard isReal(word: formattedWord) else {
             wordError(title: "Word does not exist", messgae: "You have to use real words")
             return
         }
-        
+        score += formattedWord.count
         usedWords.insert(formattedWord, at: 0)
         newWord = ""
     }
     func isReal(word: String) -> Bool {
-        let checker = UITextChecker()
-        let range = NSRange(location: 0, length: word.utf16.count)
-        let missSpellingRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en-US")
-        return !(missSpellingRange.location == NSNotFound)
+        UITextChecker().rangeOfMisspelledWord(
+                 in: word,
+                 range: NSRange(location: 0, length: word.utf16.count),
+                 startingAt: 0,
+                 wrap: false,
+                 language: "en"
+             )
+             .location == NSNotFound
     }
     func startGame(){
         if let startWordsUrl = Bundle.main.url(forResource: "start", withExtension: "txt"){
             if let allWords = try? String(contentsOf: startWordsUrl){
                 let wordsArray = allWords.components(separatedBy: "\n")
                 rootWord = wordsArray.randomElement() ?? "silkworm"
+                usedWords = [String]()
+                newWord = ""
+                score = 0
                 return
             }
         }
         fatalError("Could not load  start.txt from the Bundle")
     }
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
