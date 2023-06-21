@@ -22,8 +22,8 @@ struct Title: ViewModifier{
     //var textTitle : String
     func body(content: Content) -> some View {
         content
-        .font(.largeTitle.bold())
-        .foregroundColor(.white)
+            .font(.largeTitle.bold())
+            .foregroundColor(.white)
     }
 }
 extension View {
@@ -40,6 +40,8 @@ struct ContentView: View {
     @State private var roundNumber = 0
     @State private var countries = ["Estonia", "France", "Germany", "Ireland" , "Italy", "Nigeria",
                                     "Poland", "Russia", "Spain", "UK", "US"]
+    @State private var rotateFlag = [ 0.0, 0.0, 0.0 ]
+    @State private var opacityFlag = [ 1.0 , 1.0, 1.0 ]
     @State private var rightAnswear = Int.random(in: 0...2)
     var body: some View {
         ZStack{
@@ -65,18 +67,24 @@ struct ContentView: View {
                     VStack(spacing: 10){
                         ForEach(0..<3){ number in
                             Button{
+                                
                                 checkFlag(number: number)
+     
                             } label: {
                                 FlagImage(imageName: countries[number])
-                               
+                                
                             }
+                            .opacity(opacityFlag[number])
+                            .rotation3DEffect(.degrees(rotateFlag[number]), axis: (x: 0, y: 1, z: 0))
+                            
+                            
                         }
                     }
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
                 .background(.thinMaterial)
-               
+                
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 Spacer()
                 VStack{
@@ -94,9 +102,20 @@ struct ContentView: View {
             Text(messageAlert)
         }
     }
+    func setOpacity(){
+        for number in 0...2{
+            if number != rightAnswear{
+                withAnimation {
+                    opacityFlag[number] = 0.25
+                }
+            }
+            
+        }
+    }
     func askQuestion(){
         countries.shuffle()
         rightAnswear = Int.random(in: 0...2)
+        opacityFlag = [ 1.0 , 1.0, 1.0 ]
     }
     func checkIsLastQuestion(){
         if roundNumber == 8 {
@@ -110,10 +129,15 @@ struct ContentView: View {
         roundNumber = 0
         score = 0
     }
-    func checkFlag(number: Int) {
+    func checkFlag(number: Int)  {
         if number == rightAnswear{
             score += 1
         }
+        
+        withAnimation {
+            rotateFlag[number] += 360
+        }
+        setOpacity()
         roundNumber += 1
         checkIsLastQuestion()
         askQuestion()
