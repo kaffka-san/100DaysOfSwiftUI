@@ -8,52 +8,29 @@
 import SwiftUI
 
 
+
 struct ContentView: View {
     @StateObject var expenses = Expenses()
     @State private var showingAddExpenses = false
     @State private var amountColor = Color.black
+    var personalExpensesNotEmpty : Bool {
+        !expenses.personalItems.isEmpty
+    }
+    var businessExpensesNotEmpty : Bool {
+        !expenses.businessItems.isEmpty
+    }
     var body: some View {
         NavigationView {
             List{
-                Section{
-                    ForEach(expenses.items){ item in
-                        if item.type == "Personal"{
-                            HStack{
-                                VStack(alignment: .leading) {
-                                    Text("\(item.name)")
-                                        .font(.headline)
-                                    Text("\(item.type)")
-                                   
-                                    
-                                }
-                                Spacer()
-                                
-                                Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "eur"))
-                                    .foregroundColor(getAmountColor(amount: item.amount))
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteRow)
+                if personalExpensesNotEmpty{
+                    SectionView(itemArray: expenses.personalItems,
+                                deleteFunc: deletePersonalItems,
+                                headerText: "Personal expenses")
                 }
-                Section{
-                    ForEach(expenses.items){ item in
-                        if item.type != "Personal"{
-                            HStack{
-                                VStack(alignment: .leading) {
-                                    Text("\(item.name)")
-                                        .font(.headline)
-                                    Text("\(item.type)")
-                                   
-                                    
-                                }
-                                Spacer()
-                                
-                                Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "eur"))
-                                    .foregroundColor(getAmountColor(amount: item.amount))
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteRow)
+                if businessExpensesNotEmpty{
+                    SectionView(itemArray: expenses.businessItems,
+                                deleteFunc: deleteBusinessItems(at:),
+                                headerText: "Business expenses")
                 }
             }
             .navigationTitle("iExpense")
@@ -70,21 +47,24 @@ struct ContentView: View {
             }
         }
     }
-    func deleteRow(at offsets: IndexSet){
-        expenses.items.remove(atOffsets: offsets)
-    }
-    func getAmountColor(amount : Double) -> Color{
-        var color = Color.black
-        switch amount{
-            case 0...15 : color = .green
-            case 15...100 : color = .gray
-            case 100... : color = .red
-            default : color = .black
+    func deleteItems(at offsets: IndexSet, on array: [ExpenseItem]){
+        var indexes = IndexSet()
+        for offset in offsets{
+            let object = array[offset]
+            if let indexObject = expenses.items.firstIndex(of: object){
+                indexes.insert(indexObject)
+            }
         }
-        return color
+        expenses.items.remove(atOffsets: indexes)
     }
+    func deletePersonalItems(at offsets: IndexSet){
+        deleteItems(at: offsets, on: expenses.personalItems)
+    }
+    func deleteBusinessItems(at offsets: IndexSet){
+        deleteItems(at: offsets, on: expenses.businessItems)
+    }
+    
 }
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
