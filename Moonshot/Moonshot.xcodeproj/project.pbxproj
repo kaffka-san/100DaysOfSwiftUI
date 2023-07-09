@@ -23,6 +23,8 @@
 		307418F52A49D034008FDBDF /* HorizontalCrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307418F42A49D034008FDBDF /* HorizontalCrewView.swift */; };
 		307418F72A49D4DC008FDBDF /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307418F62A49D4DC008FDBDF /* GridView.swift */; };
 		307418F92A4AD1C5008FDBDF /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 307418F82A4AD1C5008FDBDF /* ListView.swift */; };
+		307419152A4C21DA008FDBDF /* space.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 307419142A4C21DA008FDBDF /* space.jpg */; };
+		307419172A4C252E008FDBDF /* space2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 307419162A4C252E008FDBDF /* space2.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		307418F42A49D034008FDBDF /* HorizontalCrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCrewView.swift; sourceTree = "<group>"; };
 		307418F62A49D4DC008FDBDF /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		307418F82A4AD1C5008FDBDF /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		307419142A4C21DA008FDBDF /* space.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = space.jpg; sourceTree = "<group>"; };
+		307419162A4C252E008FDBDF /* space2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = space2.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 				307418C72A44A661008FDBDF /* astronauts.json */,
 				307418C62A44A661008FDBDF /* missions.json */,
 				307418BA2A448A7B008FDBDF /* Assets.xcassets */,
+				307419142A4C21DA008FDBDF /* space.jpg */,
+				307419162A4C252E008FDBDF /* space2.jpg */,
 				307418C42A448AEC008FDBDF /* martin-martz-1hg6NpO0kIk-unsplash.jpg */,
 				307418BC2A448A7B008FDBDF /* Preview Content */,
 			);
@@ -165,7 +171,9 @@
 				307418C52A448AEC008FDBDF /* martin-martz-1hg6NpO0kIk-unsplash.jpg in Resources */,
 				307418C82A44A661008FDBDF /* missions.json in Resources */,
 				307418C92A44A661008FDBDF /* astronauts.json in Resources */,
+				307419152A4C21DA008FDBDF /* space.jpg in Resources */,
 				307418BB2A448A7B008FDBDF /* Assets.xcassets in Resources */,
+				307419172A4C252E008FDBDF /* space2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

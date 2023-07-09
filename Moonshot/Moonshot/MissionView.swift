@@ -18,6 +18,12 @@ struct MissionView: View {
     let crew: [CrewMember]
     var body: some View{
         GeometryReader{ geometry in
+            Image("space2")
+                .resizable()
+                .ignoresSafeArea()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: geometry.size.width,height: geometry.size.height)
+                .blur(radius: 2)
             ScrollView{
                 VStack(){
                     VStack{
@@ -49,13 +55,13 @@ struct MissionView: View {
                             .padding(.bottom, 5)
                     }
                     
-                   HorizontalCrewView(crew: crew)
+                    HorizontalCrewView(crew: crew)
                 }
                 .padding()
             }
-            
-            
         }
+        
+        //}
         .navigationTitle(mission.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .background(.darkBackground)
