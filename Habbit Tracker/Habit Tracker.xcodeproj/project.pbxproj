@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30267C392A5AD61800223D42 /* Habbit Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Habbit Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		30267C392A5AD61800223D42 /* Habit Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Habit Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		30267C3C2A5AD61800223D42 /* HabitTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTrackerApp.swift; sourceTree = "<group>"; };
 		30267C3E2A5AD61800223D42 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		30267C402A5AD61900223D42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,7 +49,7 @@
 		30267C302A5AD61800223D42 = {
 			isa = PBXGroup;
 			children = (
-				30267C3B2A5AD61800223D42 /* Habbit Tracker */,
+				30267C3B2A5AD61800223D42 /* Habit Tracker */,
 				30267C3A2A5AD61800223D42 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -57,12 +57,12 @@
 		30267C3A2A5AD61800223D42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30267C392A5AD61800223D42 /* Habbit Tracker.app */,
+				30267C392A5AD61800223D42 /* Habit Tracker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		30267C3B2A5AD61800223D42 /* Habbit Tracker */ = {
+		30267C3B2A5AD61800223D42 /* Habit Tracker */ = {
 			isa = PBXGroup;
 			children = (
 				30267C3C2A5AD61800223D42 /* HabitTrackerApp.swift */,
@@ -76,7 +76,7 @@
 				30267C402A5AD61900223D42 /* Assets.xcassets */,
 				30267C422A5AD61900223D42 /* Preview Content */,
 			);
-			path = "Habbit Tracker";
+			path = "Habit Tracker";
 			sourceTree = "<group>";
 		};
 		30267C422A5AD61900223D42 /* Preview Content */ = {
@@ -90,9 +90,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30267C382A5AD61800223D42 /* Habbit Tracker */ = {
+		30267C382A5AD61800223D42 /* Habit Tracker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30267C472A5AD61900223D42 /* Build configuration list for PBXNativeTarget "Habbit Tracker" */;
+			buildConfigurationList = 30267C472A5AD61900223D42 /* Build configuration list for PBXNativeTarget "Habit Tracker" */;
 			buildPhases = (
 				30267C522A5B1D1500223D42 /* lint */,
 				30267C352A5AD61800223D42 /* Sources */,
@@ -103,12 +103,12 @@
 			);
 			dependencies = (
 			);
-			name = "Habbit Tracker";
+			name = "Habit Tracker";
 			packageProductDependencies = (
 				30B9F68A2A5B2C7E007EF8C3 /* Liquid */,
 			);
 			productName = "Habbit Tracker";
-			productReference = 30267C392A5AD61800223D42 /* Habbit Tracker.app */;
+			productReference = 30267C392A5AD61800223D42 /* Habit Tracker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -126,7 +126,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 30267C342A5AD61800223D42 /* Build configuration list for PBXProject "Habbit Tracker" */;
+			buildConfigurationList = 30267C342A5AD61800223D42 /* Build configuration list for PBXProject "Habit Tracker" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -142,7 +142,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30267C382A5AD61800223D42 /* Habbit Tracker */,
+				30267C382A5AD61800223D42 /* Habit Tracker */,
 			);
 		};
 /* End PBXProject section */
@@ -176,7 +176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint \nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint --fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -320,7 +320,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Habbit Tracker/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Habit Tracker/Preview Content\"";
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -349,7 +349,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Habbit Tracker/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Habit Tracker/Preview Content\"";
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -374,7 +374,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30267C342A5AD61800223D42 /* Build configuration list for PBXProject "Habbit Tracker" */ = {
+		30267C342A5AD61800223D42 /* Build configuration list for PBXProject "Habit Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30267C452A5AD61900223D42 /* Debug */,
@@ -383,7 +383,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		30267C472A5AD61900223D42 /* Build configuration list for PBXNativeTarget "Habbit Tracker" */ = {
+		30267C472A5AD61900223D42 /* Build configuration list for PBXNativeTarget "Habit Tracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30267C482A5AD61900223D42 /* Debug */,

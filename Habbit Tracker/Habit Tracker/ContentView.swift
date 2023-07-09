@@ -8,33 +8,40 @@
 import SwiftUI
 import Foundation
 import Liquid
-
+let navBarAppearence = UINavigationBarAppearance()
 struct ContentView: View {
     @State private var isNewWindowShown = false
     @StateObject var activities = Activities()
     @State  var selecteddActivity: Activity?
 
+    init() {
+        navBarAppearence.configureWithOpaqueBackground()
+       // navBarAppearence.backgroundColor = .red
+        navBarAppearence.titleTextAttributes = [.foregroundColor: UIColor(.mainColor)]
+        navBarAppearence.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+        UINavigationBar.appearance().standardAppearance = navBarAppearence
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearence
+    }
     var body: some View {
         NavigationStack {
             List {
                 ForEach(activities.activities) { activity in
                     NavigationLink {
-                                       DetailView(selectedActivity: activity, activities: activities)
-                                   } label: {
-                                       HStack{
-                                           Text(activity.nameTitie)
-                                           Spacer()
-                                           Image(systemName: "\(activity.completionCount).circle")
-                                       }
+                        DetailView(selectedActivity: activity, activities: activities )
+                    } label: {
+                        HStack {
+                            Text(activity.nameTitie)
+                            Spacer()
+                            Image(systemName: "\(activity.completionCount).circle")
+                        }
 
-                                   }
+                    }
                 }
 
                 .onDelete(perform: deleteItem)
                 .onMove(perform: move)
                 .listRowBackground(Color.mainColor.opacity(0.8))
-                //.listRowBackground(Color.mainColor.opacity(0.3))
-
             }
             .listStyle(.sidebar)
             .backgroundAnimation()
@@ -60,22 +67,16 @@ struct ContentView: View {
                 }
 
             })
-           // .accentColor(.mainColor)
-
-            .tint(.mainColor)
-            .navigationTitle("Habbit Tracker")
+           // .tint(.mainColor)
+            .navigationTitle("Habit Tracker")
             .toolbarBackground(
 
-                            // 1
-                            Color.pink,
-                            // 2
-                            for: .navigationBar, .tabBar)
-
-
-
+                // 1
+                Color.pink,
+                // 2
+                for: .navigationBar, .tabBar)
         }
-
-        
+        .tint(.mainColor)
     }
     func deleteItem(indexes: IndexSet) {
         activities.activities.remove(atOffsets: indexes)
