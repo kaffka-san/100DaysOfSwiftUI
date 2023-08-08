@@ -9,7 +9,6 @@ import SwiftUI
 import Liquid
 struct BackroundAnimation: View {
     var body: some View {
-
         ZStack {
             Rectangle()
                 .fill(.black)
