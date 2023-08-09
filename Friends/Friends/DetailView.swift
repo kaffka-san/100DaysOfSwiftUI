@@ -8,35 +8,15 @@
 import SwiftUI
 
 struct DetailView: View {
-  var user: User
+  var user: UserCached
 
   var body: some View {
     Group {
       ScrollView {
         userCard
-        // detailCard
+        detailCard
         tags
-        Group {
-          VStack(alignment: .leading) {
-            Text("Friends:")
-              .font(.largeTitle)
-              .padding(.vertical, 5)
-            ForEach(user.friends) { friend in
-
-              Text(friend.name)
-                .foregroundColor(.secondary)
-                .padding(10)
-
-            }
-            .frame(width: 320, alignment: .leading)
-            .background(.gray.opacity(0.09))
-            .cornerRadius(20)
-          }
-          .padding(20)
-          .background(.background)
-          .cornerRadius(20)
-          .padding()
-        }
+        //friendsGroup
       }
     }
     .background{
@@ -46,20 +26,20 @@ struct DetailView: View {
         .ignoresSafeArea()
 
     }
-    .navigationTitle("\(user.name)")
+    .navigationTitle("\(user.wrappedName)")
     .navigationBarTitleDisplayMode(.inline)
 
   }
   var userCard: some View  {
     Group {
       VStack(alignment: .leading, spacing: 10) {
-        Text(user.name)
+        Text(user.wrappedName)
           .font(.largeTitle)
           .padding(.vertical, 5)
         HStack {
           VStack(alignment: .leading, spacing: 10) {
             Label {
-              Text("joined: \(user.registered.formatted(date: .numeric, time: .omitted))")
+              Text("joined: \(user.wrappedRegistered.formatted(date: .numeric, time: .omitted))")
                 .foregroundColor(.secondary)
 
             } icon: {
@@ -75,7 +55,7 @@ struct DetailView: View {
                 .foregroundColor(.secondary)
             }
             Label {
-              Text("company: \(user.company)")
+              Text("company: \(user.wrappedCompany)")
                 .foregroundColor(.secondary)
 
             } icon: {
@@ -83,7 +63,7 @@ struct DetailView: View {
                 .foregroundColor(.secondary)
             }
             Label {
-              Text(user.email)
+              Text(user.wrappedEmail)
                 .foregroundColor(.secondary)
 
             } icon: {
@@ -91,7 +71,7 @@ struct DetailView: View {
                 .foregroundColor(.secondary)
             }
             Label {
-              Text(user.address)
+              Text(user.wrappedAddress)
                 .foregroundColor(.secondary)
 
             } icon: {
@@ -116,7 +96,7 @@ struct DetailView: View {
           .font(.largeTitle)
           .padding(.vertical, 5)
 
-        Text(user.about)
+        Text(user.wrappedAbout)
           .foregroundColor(.secondary)
 
       }
@@ -132,7 +112,7 @@ struct DetailView: View {
     Group {
       ScrollView(.horizontal, showsIndicators: false) {
         HStack {
-          ForEach (user.tags, id: \.self){ tag in
+          ForEach (user.wrappedTags, id: \.self){ tag in
             Text(tag)
               .padding(20)
               .background(.background)
@@ -144,12 +124,36 @@ struct DetailView: View {
       .padding()
     }
   }
+ /* var friendsGroup: some View {
+    Group {
+      VStack(alignment: .leading) {
+        Text("Friends:")
+          .font(.largeTitle)
+          .padding(.vertical, 5)
+        ForEach(user.wrappedFriends) { friend in
+
+          Text(friend.name)
+            .foregroundColor(.secondary)
+            .padding(10)
+
+        }
+        .frame(width: 320, alignment: .leading)
+        .background(.gray.opacity(0.09))
+        .cornerRadius(20)
+      }
+      .padding(20)
+      .background(.background)
+      .cornerRadius(20)
+      .padding()
+    }
+
+  }*/
 
 
 
 }
 
-struct DetailView_Previews: PreviewProvider {
+/*struct DetailView_Previews: PreviewProvider {
   static var previews: some View {
     DetailView(user: User(
       id: "01",
@@ -171,5 +175,5 @@ struct DetailView_Previews: PreviewProvider {
         Friend(id: "1c18ccf0-2647-497b-b7b4-119f982e6297", name: "Anastasia Bonderas")
       ]))
   }
-}
+}*/
 

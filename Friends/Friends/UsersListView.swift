@@ -37,39 +37,33 @@ struct UserInfo: View {
 
 struct UsersListView: View {
   @StateObject var userListViewModel = UserListViewModel()
+
     var body: some View {
       NavigationStack{
         List {
           Section {
-            ForEach(userListViewModel.friendsOnline) { user in
+            ForEach(userListViewModel.usersOnline) { user in
               NavigationLink {
                 DetailView(user: user)
               } label: {
-                UserInfo(name: user.name, company: user.company, userStatus: user.isActive ? .online : .offline)
+                UserInfo(name: user.wrappedName, company: user.wrappedCompany, userStatus: user.isActive ? .online : .offline)
 
               }
             }
           }
           Section{
-            ForEach(userListViewModel.friendsOffline) { user in
+            ForEach(userListViewModel.usersOffline) { user in
               NavigationLink {
                 DetailView(user: user)
               } label: {
-                UserInfo(name: user.name, company: user.company, userStatus: user.isActive ? .online : .offline)
+                UserInfo(name: user.wrappedName, company: user.wrappedCompany, userStatus: user.isActive ? .online : .offline)
               }
             }
           }
 
         }
-
-        .onAppear{
-          Task{
-            await userListViewModel.fetchUsers()
-          }
-        }
-        .navigationTitle("Friends")
       }
-
+      .navigationTitle("Friends")
     }
 }
 
