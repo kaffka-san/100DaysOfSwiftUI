@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 enum UserStatus {
   case online, offline
@@ -42,7 +43,7 @@ struct UsersListView: View {
       NavigationStack{
         List {
           Section {
-            ForEach(userListViewModel.usersOnline) { user in
+            ForEach(userListViewModel.storedUsers) { user in
               NavigationLink {
                 DetailView(user: user)
               } label: {
@@ -51,24 +52,40 @@ struct UsersListView: View {
               }
             }
           }
-          Section{
-            ForEach(userListViewModel.usersOffline) { user in
-              NavigationLink {
-                DetailView(user: user)
-              } label: {
-                UserInfo(name: user.wrappedName, company: user.wrappedCompany, userStatus: user.isActive ? .online : .offline)
-              }
-            }
-          }
+//          Section{
+//            ForEach(userListViewModel.usersOffline) { user in
+//              NavigationLink {
+//                DetailView(user: user)
+//              } label: {
+//                UserInfo(name: user.wrappedName, company: user.wrappedCompany, userStatus: user.isActive ? .online : .offline)
+//              }
+//            }
+//          }
 
         }
       }
+      .task {
+        await userListViewModel.fetchUsers()
+      }
+      .onAppear{
+        whereIsMySQLite()
+      }
       .navigationTitle("Friends")
     }
+  func whereIsMySQLite() {
+      let path = NSPersistentContainer
+          .defaultDirectoryURL()
+          .absoluteString
+          .replacingOccurrences(of: "file://", with: "")
+          .removingPercentEncoding
+
+      print(path ?? "Not found")
+  }
 }
 
 struct friendsListView_Previews: PreviewProvider {
     static var previews: some View {
         UsersListView()
     }
+
 }

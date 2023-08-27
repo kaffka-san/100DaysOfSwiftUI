@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(FriendCached)
-public class FriendCached: NSManagedObject {
+public class FriendCached: NSManagedObject  {
 
 }

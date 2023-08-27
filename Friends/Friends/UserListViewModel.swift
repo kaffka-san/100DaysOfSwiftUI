@@ -11,7 +11,6 @@ import SwiftUI
 
 @MainActor class UserListViewModel: ObservableObject {
   
-  @Published var users = [User]()
   @Published var storedUsers = DatabaseManager.shared.fetchAllUserCached()
   private let viewContext = PersistenceController.shared.viewContext
   
@@ -25,12 +24,7 @@ import SwiftUI
       user.isActive != true
     }
   }
-  init() {
-    Task {
-      await fetchUsers()
-    }
 
-  }
   func fetchUsers() async {
     let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json")!
     do {
@@ -42,10 +36,12 @@ import SwiftUI
       let decoder = JSONDecoder()
       decoder.dateDecodingStrategy = .iso8601
       let dataArray = try decoder.decode([User].self, from: data)
-      users = dataArray
-      DatabaseManager.shared.addUserListItems(users)
-                      // Set from storage
-      self.storedUsers = DatabaseManager.shared.fetchAllUserCached()
+     // await MainActor.run {
+        DatabaseManager.shared.addUserListItems(dataArray)
+                        // Set from storage
+        self.storedUsers = DatabaseManager.shared.fetchAllUserCached()
+     // }
+
     } catch {
       print("Cant't decode data")
     }

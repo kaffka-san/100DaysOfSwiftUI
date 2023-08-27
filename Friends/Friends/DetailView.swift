@@ -12,11 +12,14 @@ struct DetailView: View {
 
   var body: some View {
     Group {
-      ScrollView {
-        userCard
-        detailCard
-        tags
-        //friendsGroup
+      VStack{
+        ScrollView {
+          userCard
+          detailCard
+          tags
+          friendsGroup
+
+        }
       }
     }
     .background{
@@ -124,18 +127,17 @@ struct DetailView: View {
       .padding()
     }
   }
- /* var friendsGroup: some View {
-    Group {
+  var friendsGroup: some View {
+    VStack {
       VStack(alignment: .leading) {
         Text("Friends:")
           .font(.largeTitle)
           .padding(.vertical, 5)
         ForEach(user.wrappedFriends) { friend in
 
-          Text(friend.name)
+          Text(friend.wrappedName)
             .foregroundColor(.secondary)
             .padding(10)
-
         }
         .frame(width: 320, alignment: .leading)
         .background(.gray.opacity(0.09))
@@ -146,11 +148,7 @@ struct DetailView: View {
       .cornerRadius(20)
       .padding()
     }
-
-  }*/
-
-
-
+  }
 }
 
 /*struct DetailView_Previews: PreviewProvider {
