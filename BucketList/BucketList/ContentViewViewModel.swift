@@ -7,6 +7,7 @@
 
 import Foundation
 import MapKit
+import LocalAuthentication
 
 @MainActor class ContentViewViewModel: ObservableObject {
     @Published var mapRegion = MKCoordinateRegion(
@@ -15,6 +16,7 @@ import MapKit
 
     @Published private(set) var locations = [Location]()
     @Published var selectedLocation: Location?
+    @Published var isUnlocked = false
 
     let savedPath = FileManager.documentsDirectory().appendingPathComponent("savedPlaces")
 
@@ -56,5 +58,25 @@ import MapKit
             save()
         }
 
+    }
+
+    func authenticate() {
+        let context = LAContext()
+        var error: NSError?
+
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "We need this to unlock your data"
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticateError in
+                if success {
+                    Task { @MainActor in
+                        self.isUnlocked = true
+                    }
+                } else {
+                    //error
+                }
+            }
+        } else {
+            // no biometrics
+        }
     }
 }
