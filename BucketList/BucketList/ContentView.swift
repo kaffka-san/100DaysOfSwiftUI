@@ -55,19 +55,33 @@ struct ContentView: View {
                     }
                 }
             }
+
             .sheet(item: $contentViewViewModel.selectedLocation) { location in
                 EditView(location: location) { newLocation in
                     contentViewViewModel.updateLocation(newLocation: newLocation)
                 }
             }
         } else {
-            Button("Unlock Device") {
+            Button() {
                 contentViewViewModel.authenticate()
+            } label: {
+                Text("Unlock Device")
+
+
             }
             .padding()
             .background(.blue)
             .foregroundColor(.white)
             .clipShape(Capsule())
+            .frame(width: 200, height: 50)
+
+            .alert(isPresented: $contentViewViewModel.isShowingAlert, content: {
+                Alert(
+                    title: Text(contentViewViewModel.alertTitle),
+                    message: Text(contentViewViewModel.alertText),
+                    dismissButton: .default(Text("Ok"))
+                )
+            })
         }
     }
 }

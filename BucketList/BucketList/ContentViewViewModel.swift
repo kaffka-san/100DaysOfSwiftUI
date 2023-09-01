@@ -18,6 +18,10 @@ import LocalAuthentication
     @Published var selectedLocation: Location?
     @Published var isUnlocked = false
 
+    @Published var isShowingAlert = false
+    var alertTitle = ""
+    var alertText = ""
+
     let savedPath = FileManager.documentsDirectory().appendingPathComponent("savedPlaces")
 
     init() {
@@ -73,10 +77,20 @@ import LocalAuthentication
                     }
                 } else {
                     //error
+                    Task { @MainActor in
+                        self.alertTitle = "Error"
+                        self.alertText = "Face not recognised"
+                        self.isShowingAlert = true
+                    }
                 }
             }
         } else {
             // no biometrics
+            Task { @MainActor in
+                self.alertTitle = "Error"
+                self.alertText = "Your devices doesn't support biometrics, please use another authenticate method"
+                self.isShowingAlert = true
+            }
         }
     }
 }
