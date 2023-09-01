@@ -9,62 +9,61 @@ import SwiftUI
 import MapKit
 import LocalAuthentication
 
-struct Location: Identifiable {
-    let id = UUID()
-    let name: String
-    let coordinate: CLLocationCoordinate2D
-}
-
 struct ContentView: View {
-    /*
-    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50.10328, longitude: 14.44038), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-
-    let locations = [
-        Location(name: "Museum", coordinate: CLLocationCoordinate2D(latitude:  50.079786, longitude: 14.430604)),
-        Location(name: "Charles Bridge", coordinate: CLLocationCoordinate2D(latitude:   50.086617, longitude: 14.410304))
-    ]
-*/
-    @State private var isLocked = true
+    @State private var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
+    @State private var locations = [Location]()
+    @State private var selectedLocation: Location?
+   
     var body: some View {
-       /* NavigationView {
-            Map(coordinateRegion: $mapRegion, annotationItems: locations) { location in
-                MapAnnotation(coordinate: location.coordinate) {
-                    NavigationLink() {
+        ZStack {
+            Map(coordinateRegion: $mapRegion, annotationItems: locations){ location in
+                MapAnnotation(coordinate: location.coordinates) {
+                    VStack {
+                        Image(systemName: "star.circle")
+                            .resizable()
+                            .frame(width: 44, height: 44)
+                            .foregroundColor(.red)
+                            .background(.white)
+                            .clipShape(Circle())
                         Text(location.name)
-                    } label: {
-
-                        Circle()
-                            .stroke(lineWidth: 2)
-                            .frame(width: 100)
+                            .fixedSize()
+                    }
+                    .onTapGesture {
+                        selectedLocation = location
                     }
                 }
             }
-
-        } */
-        VStack {
-            if isLocked {
-                Text("Locked")
-            } else {
-                Text("Unlocked")
-            }
-        }
-        .onAppear(perform: authenticate)
-    }
-    func authenticate() {
-        let context = LAContext()
-        var error: NSError?
-
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "We need to unlock your data"
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, error in
-                if success {
-                    isLocked = false
-                } else {
-                    //problem
+                .ignoresSafeArea()
+            Circle()
+                .fill(.blue)
+                .opacity(0.3)
+                .frame(width: 32)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button() {
+                        let location = Location(name: "New location", description: "", id: UUID(), latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude)
+                        locations.append(location)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .padding()
+                    .background(.black.opacity(0.7))
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .clipShape(Circle())
+                    .padding(.trailing)
                 }
             }
-        } else {
-            // no biometrics
+        }
+        .sheet(item: $selectedLocation) { location in
+            EditView(location: location) { newLocation in
+                if let index = locations.firstIndex(of: location) {
+                    locations[index] = newLocation
+                }
+
+            }
         }
     }
 }
