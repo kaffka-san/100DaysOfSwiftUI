@@ -9,27 +9,24 @@ import SwiftUI
 
 struct EditView: View {
     @Environment (\.dismiss) var dismiss
-    var location: Location
     var onSave: (Location) -> Void
-    @State private var name: String
-    @State private var description: String
 
-    @State private var state = LoadingState.loading
-    @State private var pages = [Page]()
+    @StateObject var editViewViewModel: EditViewViewModel
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Edit title", text: $name)
-                    TextField("Edit description", text: $description)
+                    TextField("Edit title", text: $editViewViewModel.name)
+                    TextField("Edit description", text: $editViewViewModel.description)
                 }
                 Section {
-                    if state == LoadingState.loading {
+                    if editViewViewModel.state == LoadingState.loading {
                         ProgressView()
-                    } else if state == LoadingState.failed {
+                    } else if editViewViewModel.state == LoadingState.failed {
                         Text("There was an error. Try again later")
                     } else {
-                        ForEach(pages, id: \.pageid) { page in
+                        ForEach(editViewViewModel.pages, id: \.pageid) { page in
                             /*@START_MENU_TOKEN@*/Text(page.title)/*@END_MENU_TOKEN@*/
                                 .font(.headline)
                             + Text(": ") +
@@ -44,59 +41,30 @@ struct EditView: View {
             .navigationTitle("Edit mode")
             .toolbar {
                 Button("Save") {
-                    var newLocation = location
-                    newLocation.id = UUID()
-                    newLocation.name = name
-                    
-                    newLocation.description = description
-                    onSave(newLocation)
+                    onSave(editViewViewModel.save())
                     dismiss()
                 }
             }
         }
         .onAppear {
             Task {
-               await fetchData(latitude: location.latitude,longitude: location.longitude)
+                await editViewViewModel.fetchData(
+                    latitude: editViewViewModel.location.latitude,
+                    longitude: editViewViewModel.location.longitude
+                )
             }
         }
     }
 
-    init(location: Location, onSave: @escaping (Location)->Void) {
-        self.location = location
+    init(_ editViewViewModel: EditViewViewModel, onSave: @escaping (Location)->Void) {
         self.onSave = onSave
-        _name = State(initialValue: location.name)
-        _description = State(initialValue: location.description)
-    }
-
-    enum LoadingState {
-        case loading
-        case failed
-        case data
-    }
-
-    func fetchData(latitude: Double, longitude: Double) async {
-        let urlString = "https://en.wikipedia.org/w/api.php?ggscoord=\(latitude)%7C\(longitude)&action=query&prop=coordinates%7Cpageimages%7Cpageterms&colimit=50&piprop=thumbnail&pithumbsize=500&pilimit=50&wbptterms=description&generator=geosearch&ggsradius=10000&ggslimit=50&format=json"
-        guard let url = URL(string: urlString) else {
-            print("Can't create url")
-            state = LoadingState.failed
-            return
-        }
-        print(url)
-        do {
-            let (data, _ ) = try await URLSession.shared.data(from: url)
-            let decodedData = try JSONDecoder().decode(Result.self, from: data)
-            pages = decodedData.query.pages.values.sorted()
-            state = LoadingState.data
-        } catch {
-            print("Can't decode data")
-            state = LoadingState.failed
-        }
+      _editViewViewModel = StateObject(wrappedValue: editViewViewModel)
     }
 }
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        EditView(location: Location.example, onSave: { _ in })
+        EditView(EditViewViewModel(location: Location.example), onSave: { _ in })
     }
 }
 
