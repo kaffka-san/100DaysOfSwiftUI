@@ -15,11 +15,11 @@ struct RatingView: View {
     var offImage: Image?
 
     var body: some View {
-        VStack{
+        VStack {
             if !labelText.isEmpty {
                 Text(labelText)
             }
-            HStack{
+            HStack {
                 ForEach(1..<maxValue+1, id: \.self) { index in
                     getImageForNumber(num: index)
                         .foregroundColor(index <= rating ? .yellow : .gray)
@@ -27,9 +27,19 @@ struct RatingView: View {
                             rating = index
                         }
                 }
-
             }
-
+        }
+        .accessibilityElement()
+        .accessibilityLabel("Rating")
+        .accessibilityValue(rating == 1 ? "\(rating) star" : "\(rating) stars")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                if rating < maxValue { rating += 1 }
+            case .decrement:
+                if rating > 1 { rating -= 1 }
+            default:  break
+            }
         }
     }
     func getImageForNumber(num: Int) -> Image {
