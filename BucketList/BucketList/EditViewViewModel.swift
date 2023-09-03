@@ -18,7 +18,6 @@ import MapKit
 
     init(location: Location) {
         self.location = location
-        //self.onSave = onSave
         _name = Published(initialValue: location.name)
         _description = Published(initialValue: location.description)
     }
