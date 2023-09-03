@@ -20,11 +20,16 @@ struct SectionView: View{
                             .font(.headline)
                         Text("\(item.type)")
                     }
+
                     Spacer()
                     
                     Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "eur"))
                         .getAmountColor(amount: item.amount)
                 }
+                .accessibilityElement()
+                .accessibilityLabel("\(item.name), \(item.amount.formatted(.currency(code:  Locale.current.currency?.identifier ?? "eur")))")
+                .accessibilityHint(item.type)
+
             }
             .onDelete(perform: deleteFunc)
         } header: {
