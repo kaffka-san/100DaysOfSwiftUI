@@ -15,10 +15,11 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var isAlertActive = false
     @State private var score = 0
+
     var body: some View {
-        NavigationView{
-            List{
-                Section{
+        NavigationView {
+            List {
+                Section {
                     TextField("", text: $newWord).textInputAutocapitalization(.never)
                 }
                 .onSubmit(addWord)
@@ -31,12 +32,15 @@ struct ContentView: View {
                 Section("Your score is:"){
                     Text(String(score))
                 }
-                Section{
+                Section {
                     ForEach(usedWords, id: \.self){ word in
                         HStack{
                             Image(systemName: "\(word.count).circle.fill")
                             Text(word)
                         }
+                        .accessibilityElement()
+                        .accessibilityLabel(word)
+                        .accessibilityHint("\(word.count) letters")
                     }
                 }
                 
@@ -52,17 +56,21 @@ struct ContentView: View {
     func isOriginal(word: String) -> Bool {
         return !usedWords.contains(word)
     }
-    func wordError(title: String, messgae : String){
+
+    func wordError(title: String, message : String){
         errorTitle = title
-        errorMessage = messgae
+        errorMessage = message
         isAlertActive = true
     }
+
     func isNotShortWord(word: String) -> Bool {
         return word.count > 2
     }
+
     func isNotSameWord(word: String) -> Bool {
         return !(word == rootWord)
     }
+
     func isPossible(word: String) -> Bool{
         var tempRootWord = rootWord
         for char in word{
@@ -72,33 +80,35 @@ struct ContentView: View {
         }
         return true
     }
+
     func addWord(){
         let formattedWord = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         guard formattedWord.count > 0 else {return}
         guard isOriginal(word: formattedWord) else{
-           wordError(title: "Word used already", messgae: "Be more creative")
+           wordError(title: "Word used already", message: "Be more creative")
             return
         }
         guard isPossible(word: formattedWord) else {
-            wordError(title: "Word not possible", messgae: "You can't spell it from \(rootWord)")
+            wordError(title: "Word not possible", message: "You can't spell it from \(rootWord)")
             return
         }
         guard isNotSameWord(word: formattedWord) else {
-            wordError(title: "Same word", messgae: "You can't use \(rootWord) ")
+            wordError(title: "Same word", message: "You can't use \(rootWord) ")
             return
         }
         guard isNotShortWord(word: formattedWord) else {
-            wordError(title: "Word is too short", messgae: "Word should have at least 3 letters")
+            wordError(title: "Word is too short", message: "Word should have at least 3 letters")
             return
         }
         guard isReal(word: formattedWord) else {
-            wordError(title: "Word does not exist", messgae: "You have to use real words")
+            wordError(title: "Word does not exist", message: "You have to use real words")
             return
         }
         score += formattedWord.count
         usedWords.insert(formattedWord, at: 0)
         newWord = ""
     }
+
     func isReal(word: String) -> Bool {
         UITextChecker().rangeOfMisspelledWord(
                  in: word,
@@ -109,6 +119,7 @@ struct ContentView: View {
              )
              .location == NSNotFound
     }
+
     func startGame(){
         if let startWordsUrl = Bundle.main.url(forResource: "start", withExtension: "txt"){
             if let allWords = try? String(contentsOf: startWordsUrl){
