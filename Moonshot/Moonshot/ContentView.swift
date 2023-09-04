@@ -31,10 +31,10 @@ struct ContentView: View {
                     isGridView.toggle()
                 } label: {
                     if isGridView{
-                        Image(systemName: "lightswitch.off.square.fill")
+                        Image(systemName: "list.bullet")
                             .foregroundColor(.white)
                     } else {
-                        Image(systemName: "lightswitch.on.square.fill")
+                        Image(systemName: "square.grid.2x2")
                             .foregroundColor(.white)
                     }
                    

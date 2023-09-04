@@ -61,7 +61,6 @@ import LocalAuthentication
             locations[index] = newLocation
             save()
         }
-
     }
 
     func authenticate() {
