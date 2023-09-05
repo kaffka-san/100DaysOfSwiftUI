@@ -47,7 +47,7 @@ struct ContentView: View {
                 VStack {
                     if(currentFilter.inputKeys.contains(kCIInputIntensityKey)) {
                         HStack(spacing: 15) {
-                            Text("Itensity")
+                            Text("Intensity")
                             Slider(value: $intensity, in: 0...1)
                                 .onChange(of: intensity) { _ in
                                     applyProcessing()
@@ -99,7 +99,6 @@ struct ContentView: View {
                         Button("Save", action: save)
                             .disabled(image == nil)
                     }
-
                 }
             }
             .padding()
@@ -110,6 +109,7 @@ struct ContentView: View {
             .sheet(isPresented: $isImagePickerShowing) {
                 ImagePicker(image: $inputImage)
             }
+            
             .alert(isPresented: $isShowingAlert, content: {
                 Alert(title: alertTitle, message: alertText, dismissButton: .default(Text("Ok")))
             })

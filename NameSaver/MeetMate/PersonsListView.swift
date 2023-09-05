@@ -7,10 +7,11 @@
 
 import PhotosUI
 import SwiftUI
-
+import MapKit
 
 struct PersonsListView: View {
-    @State private var avatarItem: PhotosPickerItem?
+    @State private var image: UIImage?
+    @State private var isShowingPhotoPicker = false
     @State private(set) var persons: [Person] = []
     let fileManager = FileManager()
 
@@ -18,9 +19,14 @@ struct PersonsListView: View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(persons.sorted()) { person in
+                    ForEach(persons) { person in
                         NavigationLink {
-                            PersonDetailView(person: person)
+                            PersonDetailView(person: person,
+                                             mapRegion:  MKCoordinateRegion(
+                                                center: CLLocationCoordinate2D(
+                                                    latitude: person.locations[0].latitude,
+                                                    longitude: person.locations[0].longitude),
+                                                span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)))
                         } label: {
                             HStack(spacing: 15) {
                                 Image(uiImage: person.image)
@@ -41,19 +47,27 @@ struct PersonsListView: View {
                     .onDelete(perform: delete)
                 }
                 Spacer()
-                PhotosPicker("Select avatar", selection: $avatarItem, matching: .images)
-                    .padding()
-                    .background(.blue)
-                    .foregroundColor(.white)
-                    .clipShape(Capsule())
-                    .padding(.top)
+                Button("Add person") {
+                    isShowingPhotoPicker = true
+                }
+                .padding()
+                .background(.blue)
+                .foregroundColor(.white)
+                .clipShape(Capsule())
+                .padding()
             }
             .onAppear {
                 readData()
             }
-            .sheet(item: $avatarItem) { _ in
-                AddPersonView(photoPickerItem: avatarItem) { person in
+            .fullScreenCover(isPresented: $isShowingPhotoPicker) {
+                ImagePickerView(sourceType: .camera) { image in
+                    self.image = image
+                }
+            }
+            .sheet(item: $image) { img in
+                AddPersonView(uiImage: img) { person in
                     persons.append(person)
+                    persons = persons.sorted()
                     writeToDocuments()
                 }
             }
@@ -94,7 +108,7 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-extension PhotosPickerItem: Identifiable {
+extension UIImage: Identifiable {
     public var id: UUID {
         UUID()
     }

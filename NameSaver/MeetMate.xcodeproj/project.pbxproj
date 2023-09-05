@@ -15,6 +15,8 @@
 		30BC9AAD2AA4DA3F006663E4 /* AddPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC9AAC2AA4DA3E006663E4 /* AddPersonView.swift */; };
 		30BC9AAF2AA4F466006663E4 /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC9AAE2AA4F466006663E4 /* PersonDetailView.swift */; };
 		30BC9AB12AA4F8F7006663E4 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC9AB02AA4F8F7006663E4 /* Person.swift */; };
+		30BC9AB32AA628E0006663E4 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC9AB22AA628E0006663E4 /* ImagePicker.swift */; };
+		30BC9AB52AA63BD8006663E4 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC9AB42AA63BD8006663E4 /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		30BC9AAC2AA4DA3E006663E4 /* AddPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPersonView.swift; sourceTree = "<group>"; };
 		30BC9AAE2AA4F466006663E4 /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		30BC9AB02AA4F8F7006663E4 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		30BC9AB22AA628E0006663E4 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		30BC9AB42AA63BD8006663E4 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 			children = (
 				30BC9A9C2AA4D490006663E4 /* MeetMateApp.swift */,
 				30BC9A9E2AA4D490006663E4 /* PersonsListView.swift */,
+				30BC9AB42AA63BD8006663E4 /* Location.swift */,
+				30BC9AB22AA628E0006663E4 /* ImagePicker.swift */,
 				30BC9AB02AA4F8F7006663E4 /* Person.swift */,
 				30BC9AAC2AA4DA3E006663E4 /* AddPersonView.swift */,
 				30BC9AAE2AA4F466006663E4 /* PersonDetailView.swift */,
@@ -151,7 +157,9 @@
 			files = (
 				30BC9AB12AA4F8F7006663E4 /* Person.swift in Sources */,
 				30BC9AAB2AA4D813006663E4 /* FileManager.swift in Sources */,
+				30BC9AB52AA63BD8006663E4 /* Location.swift in Sources */,
 				30BC9A9F2AA4D490006663E4 /* PersonsListView.swift in Sources */,
+				30BC9AB32AA628E0006663E4 /* ImagePicker.swift in Sources */,
 				30BC9AAF2AA4F466006663E4 /* PersonDetailView.swift in Sources */,
 				30BC9AAD2AA4DA3F006663E4 /* AddPersonView.swift in Sources */,
 				30BC9A9D2AA4D490006663E4 /* MeetMateApp.swift in Sources */,
@@ -286,6 +294,10 @@
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to have an acces to your camera";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "we need your location";
+				INFOPLIST_KEY_NSLocationUsageDescription = "we need your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "we need your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -315,6 +327,10 @@
 				DEVELOPMENT_TEAM = RNQNWA79SV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to have an acces to your camera";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "we need your location";
+				INFOPLIST_KEY_NSLocationUsageDescription = "we need your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "we need your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
